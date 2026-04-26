@@ -1,9 +1,11 @@
+# This script organizes the downloaded DICOM files into a structured format based on patient ID and modality.
+
 import os
 import shutil
 import pydicom
 
-raw_data_path = "./data/raw"
-organized_data_path = "./data/organized"
+raw_data_path = "./data/raw_data"
+organized_data_path = "./data/organized_data"
 
 os.makedirs(organized_data_path, exist_ok=True)
 
@@ -39,14 +41,14 @@ else:
                 series_uid = sample_dcm.SeriesInstanceUID
 
                 # Create new folder name
-                target_dir = os.path.join(organized_data_path, patient_id, modality, series_uid)
+                target_dir = os.path.join(organized_data_path, patient_id, modality)
                 os.makedirs(target_dir, exist_ok=True)
 
                 # Move files to the new location
                 for f in files:
                     shutil.move(os.path.join(folder_path, f), os.path.join(target_dir, f))
 
-                print(f"Moved: {patient_id} - {modality} - {series_uid}")
+                print(f"Moved: {patient_id} - {modality}")
 
             except Exception as e:
                 print(f"Error processing {folder_name}: {e}")
