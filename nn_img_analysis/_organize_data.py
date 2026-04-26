@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This script organizes the downloaded DICOM files into a structured format based on patient ID and modality.
 
 import os

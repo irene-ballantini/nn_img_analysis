@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # This script connects to the TCIA API, retrieves metadata for the NSCLC-Radiomics collection, 
 # filters for patients with both CT and RTSTRUCT modalities,
 # and downloads the DICOM series for a subset of patients into a specified directory.
