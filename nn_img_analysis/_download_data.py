@@ -5,7 +5,7 @@
 import os
 from tcia_utils import nbia
 
-data_path = "./data/raw_data"
+data_path = "../data/raw_data"
 
 # Creation of folder for raw data
 if not os.path.exists(data_path):

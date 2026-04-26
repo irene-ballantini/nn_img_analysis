@@ -4,8 +4,8 @@ import os
 import shutil
 import pydicom
 
-raw_data_path = "./data/raw_data"
-organized_data_path = "./data/organized_data"
+raw_data_path = "../data/raw_data"
+organized_data_path = "../data/organized_data"
 
 os.makedirs(organized_data_path, exist_ok=True)
 
@@ -65,4 +65,4 @@ else:
         print(f"Could not remove folder {raw_data_path}: {e}")
         
 
-    print("\nDone! Now all data are organized in './data/organized' folder divided per patient")
+    print("\nDone! Now all data are organized in '../data/organized' folder divided per patient")
