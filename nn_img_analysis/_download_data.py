@@ -1,18 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# This script connects to the TCIA API, retrieves metadata for the NSCLC-Radiomics collection, 
-# filters for patients with both CT and RTSTRUCT modalities,
-# and downloads the DICOM series for a subset of patients into a specified directory.
+""" 
+Download script for NSCLC-Radiomics dataset from TCIA. 
 
-import os
+This script connects to the TCIA API, retrieves metadata for the NSCLC-Radiomics collection, 
+filters for patients with both CT and RTSTRUCT modalities,
+and downloads the DICOM series for a subset of patients into a specified directory.
+
+"""
+
 from tcia_utils import nbia
+from pathlib import Path
 
-data_path = "../data/raw_data"
+BASE_DIR = Path(__file__).resolve().parent.parent
+data_path = BASE_DIR / "data" / "raw_data"
 
 # Creation of folder for raw data
-if not os.path.exists(data_path):
-    os.makedirs(data_path)
+data_path.mkdir(parents=True, exist_ok=True)
 
 # 1. Metadata retrieval
 print("Connecting to TCIA... Retrieving series list.")
