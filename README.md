@@ -1,2 +1,2 @@
-# nn_img_analysis
-Image Analytics Pipeline: Segmentation and target detection using Neural Networks, featuring comprehensive quantitative performance metrics.
+# nsclc_survival
+NSCLC Radiomics: Survival Time prediction using CT-extracted features and clinical data.

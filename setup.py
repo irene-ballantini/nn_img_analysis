@@ -6,13 +6,13 @@ from setuptools import setup
 __author__ = ['Irene Ballantini']
 __email__ = ['irene.ballantini@studio.unibo.it']
 
-PACKAGE_NAME = 'nn_img_analysis'
+PACKAGE_NAME = 'nsclc_survival'
 PACKAGE_VERSION = '0.0.1'
-DESCRIPTION = 'Segmentation and target detection using Neural Networks, featuring comprehensive quantitative performance metrics.'
+DESCRIPTION = 'NSCLC Radiomics: Survival Time prediction using CT-extracted features and clinical data.'
 AUTHOR = 'Irene Ballantini'
 EMAIL = 'irene.ballantini@studio.unibo.it'
 REQUIRES_PYTHON = '>=3'
-URL = 'https://github.com/irene-ballantini/nn_img_analysis'
+URL = 'https://github.com/irene-ballantini/nsclc_survival'
 DOWNLOAD_URL = URL
 
 setup(
@@ -55,7 +55,7 @@ setup(
     'Programming Language :: Python :: Implementation :: PyPy'
   ],
   entry_points={'console_scripts': [
-    'nn_img_analysis = nn_img_analysis.__main__:main',
+    'nsclc_survival = nsclc_survival.__main__:main',
     ],
   },
 )
