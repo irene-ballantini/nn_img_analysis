@@ -13,20 +13,16 @@ a new structured directory format organized by PatientID and Modality:
 
 import shutil
 import pydicom
-from pathlib import Path
+from settings import RAW_DATA_PATH, ORGANIZED_DATA_PATH
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-raw_data_path = BASE_DIR / "data" / "raw_data"
-organized_data_path = BASE_DIR / "data" / "organized_data"
-
-organized_data_path.mkdir(parents=True, exist_ok=True)
+ORGANIZED_DATA_PATH.mkdir(parents=True, exist_ok=True)
 
 # Check whether the raw data folder exists or has already been removed (e.g. if the script is run twice)
-if not raw_data_path.exists():
+if not RAW_DATA_PATH.exists():
     print(f"raw folder not found: probably all files have already been moved and the raw folder removed.")
     exit()
 
-all_folders = [f for f in raw_data_path.iterdir() if f.is_dir()]
+all_folders = [f for f in RAW_DATA_PATH.iterdir() if f.is_dir()]
 
 print(f"Analysing {len(all_folders)} folders in progress...")
 
@@ -47,8 +43,8 @@ else:
                 modality = sample_dcm.Modality
                 # series_uid = sample_dcm.SeriesInstanceUID
 
-                # Create new folder name
-                target_dir = organized_data_path / patient_id / modality
+                # Create new folder name for the target directory
+                target_dir = ORGANIZED_DATA_PATH / patient_id / modality
                 target_dir.mkdir(parents=True, exist_ok=True)
 
                 # Move files to the new location
@@ -66,10 +62,10 @@ else:
 
     # Now remove also the raw folder
     try:
-        shutil.rmtree(raw_data_path)
-        print(f"\nSuccessfully removed the entire '{raw_data_path}' folder.")
+        shutil.rmtree(RAW_DATA_PATH)
+        print(f"\nSuccessfully removed the entire '{RAW_DATA_PATH}' folder.")
     except Exception as e:
-        print(f"Could not remove folder {raw_data_path}: {e}")
+        print(f"Could not remove folder {RAW_DATA_PATH}: {e}")
         
 
-    print("\nDone! Now all data are organized in '../data/organized' folder divided per patient")
+    print("\nDone! Now all data are organized in '../data/organized_data' folder divided per patient")
