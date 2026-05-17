@@ -11,7 +11,7 @@ PACKAGE_VERSION = '0.0.1'
 DESCRIPTION = 'NSCLC Radiomics: Survival Time prediction using CT-extracted features and clinical data.'
 AUTHOR = 'Irene Ballantini'
 EMAIL = 'irene.ballantini@studio.unibo.it'
-REQUIRES_PYTHON = '>=3'
+REQUIRES_PYTHON = '>=3.5, <3.11'
 URL = 'https://github.com/irene-ballantini/nsclc_survival'
 DOWNLOAD_URL = URL
 
@@ -48,9 +48,6 @@ setup(
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
     'Programming Language :: Python :: Implementation :: CPython',
     'Programming Language :: Python :: Implementation :: PyPy'
   ],
