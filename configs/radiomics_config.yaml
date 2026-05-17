@@ -1,0 +1,37 @@
+imageType:
+  Original: {}
+  Wavelet: {}
+  LoG:
+    sigma: [1.0, 2.0, 3.0]
+  Square: {}
+  SquareRoot: {}
+  Logarithm: {}
+  Exponential: {}
+
+featureClass:
+  firstorder: []
+  shape: []          # Extracts 3D shape features (correct for volumetric CT data)
+  #shape2D: []       # REMOVED: Disabled because input data is 3D and force2D is false
+  glcm: []
+  glrlm: []
+  glszm: []
+  gldm: []
+  ngtdm: []
+
+setting:
+  # Image are already isotropic, no resampling is needed
+  resampledPixelSpacing: null
+  interpolator: 'sitkBSpline'
+  label: 1
+
+  # Suggested normalization for CT images
+  normalize: true
+  normalizeScale: 100
+  voxelArrayShift: 1000
+
+  # Standard radiomic binning
+  binWidth: 25
+
+  # For reproducibility
+  force2D: false
+  force2Ddimension: 0 
