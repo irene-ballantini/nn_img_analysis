@@ -4,6 +4,7 @@
 from __version__ import __version__
 from preprocessing import RadiomicsPreprocessor
 from feature_extractor import FeatureExtractor
+from utils import save_features_to_csv
 from settings import ORGANIZED_DATA_PATH, PREPROCESSED_DATA_PATH, RADIOMICS_CONFIG_PATH, FEATURES_CSV_PATH
 
 def main (): 
@@ -24,12 +25,11 @@ def main ():
     print(" 2. RUNNING FEATURE EXTRACTION  ".center(50, "#"))
     print("#" * 50)
 
-    fe = FeatureExtractor(
-        preprocessed_path=PREPROCESSED_DATA_PATH, 
-        config_path=RADIOMICS_CONFIG_PATH 
-    )
+    fe = FeatureExtractor(config_path=RADIOMICS_CONFIG_PATH)
     
-    fe.extract_all_features(output_csv=FEATURES_CSV_PATH)
+    extracted_features = fe.extract_all_features(preprocessed_path=PREPROCESSED_DATA_PATH)
+
+    save_features_to_csv(features_list=extracted_features, output_path=FEATURES_CSV_PATH)
 
 if __name__ == "__main__":
     main()

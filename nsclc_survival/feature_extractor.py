@@ -3,13 +3,14 @@
 
 from pathlib import Path
 import time
-import pandas as pd
 from radiomics import featureextractor
 
 class FeatureExtractor:
-    def __init__(self, preprocessed_path, config_path):
+    """ 
+    Class to extract radiomics features from preprocessed images and masks using PyRadiomics.
+    """
+    def __init__(self, config_path):
 
-        self.preprocessed_path = Path(preprocessed_path)
         self.config_path = Path(config_path)
 
         if self.config_path.exists():
@@ -21,12 +22,19 @@ class FeatureExtractor:
         print("Image types enabled:", self.extractor.enabledImagetypes)
         print("Feature classes enabled:", self.extractor.enabledFeatures)
 
-    def extract_all_features(self, output_csv):
-        patient_folders = sorted([f for f in self.preprocessed_path.iterdir() if f.is_dir()])
+    def extract_all_features(self, preprocessed_path):
+        """
+        Extract features from all patients in the directory.
+
+        Returns:
+            list of dict: A list where each element is a dictionary of features for a single patient.
+        """
+        preprocessed_path = Path(preprocessed_path)
+        patient_folders = sorted([f for f in preprocessed_path.iterdir() if f.is_dir()])
         print(f"Found {len(patient_folders)} patients.")
         
         start_total_time = time.time()    # Start total timer
-        rows = []
+        all_features = []
         for p in patient_folders:
             image_path = p / "image.nii.gz"
             mask_path = p / "label.nii.gz"
@@ -41,7 +49,7 @@ class FeatureExtractor:
             
             try:
                 feats = self.extract_radiomics(image_path, mask_path, patient_id)
-                rows.append(feats)
+                all_features.append(feats)
                 
                 # Calculate duration time for this patient 
                 patient_duration = time.time() - start_patient_time
@@ -50,21 +58,6 @@ class FeatureExtractor:
             except Exception as e:
                 print(f"[ERROR] {patient_id}: {e}")
                 continue
-
-        if not rows:
-            print("No features extracted.")
-            return
-        
-        # DataFrame creation
-        df = pd.DataFrame(rows)
-        # PatientID as first column
-        cols = ["PatientID"] + [c for c in df.columns if c != "PatientID"]
-        df = df[cols]
-        
-        output_csv = Path(output_csv)
-        output_csv.parent.mkdir(parents=True, exist_ok=True)
-        
-        df.to_csv(output_csv, index=False)
         
         # Calculate total duration time
         total_duration = time.time() - start_total_time
@@ -72,18 +65,33 @@ class FeatureExtractor:
         minutes = int((total_duration % 3600) // 60)
         seconds = total_duration % 60
 
-        print(f"\nExtraction completed. File saved in {output_csv}")
-        print(f"Number of processed patients: {len(rows)}")
-        print(f"Number of radiomics features (columns): {df.shape[1] - 1}")
+        print(f"\nExtraction completed.")
+        print(f"Number of processed patients: {len(all_features)}")
+        print(f"Number of  extracted radiomics features (columns): {len(all_features[0]) - 1 if all_features else 0}")  # Subtract 1 for PatientID column
 
         if hours > 0:
             time_str = f"{hours}h {minutes}m {seconds:.2f}s"
         else:
             time_str = f"{minutes}m {seconds:.2f}s"
             
-        print(f"Total execution time: {time_str} (Average: {total_duration/len(rows):.2f}s per patient)")
+        avg_time = total_duration / len(all_features) if all_features else 0.00
+        print(f"Total execution time: {time_str} (Average: {avg_time:.2f}s per patient)")
+
+        return all_features
 
     def extract_radiomics(self, image_path, mask_path, patient_id):
+        """
+        Extract features from the single patient, removing metadata diagnostics.
+
+        Args:
+            image_path (Path): Path to the image file
+            mask_path (Path): Path to the mask file
+            patient_id (str): ID of the patient
+
+        Returns:
+            dict: A dictionary containing the extracted feature names (keys) 
+                  and their corresponding calculated values (values).
+        """
         result = self.extractor.execute(str(image_path), str(mask_path))
         
         # Remove metadata diagnostics
